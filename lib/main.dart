@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-final nameProvider = Provider<String>((ref) => 'Mohamed');
+final nameProvider = StateProvider<int>((ref) => 0);
 
 class HomeView extends StatelessWidget {
   @override
@@ -32,9 +32,17 @@ class HomeView extends StatelessWidget {
       body: Center(
         child: Consumer(
           builder: (context, ref, child) => Container(
-            child: Text(ref.watch(nameProvider)),
+            child: Text(
+              ref.watch(nameProvider).toString(),
+              style: TextStyle(fontSize: 50),
+            ),
           ),
         ),
+      ),
+      floatingActionButton: Consumer(
+        builder: (context, ref, child) => FloatingActionButton(onPressed: () {
+          ref.watch(nameProvider.notifier).state++;
+        }),
       ),
     );
   }
