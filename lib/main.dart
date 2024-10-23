@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_revision/second_screen.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -30,20 +31,12 @@ class HomeView extends StatelessWidget {
 
     return Scaffold(
       body: Center(
-        child: Consumer(
-          builder: (context, ref, child) => Container(
-            child: Text(
-              ref.watch(nameProvider).toString(),
-              style: TextStyle(fontSize: 50),
-            ),
-          ),
-        ),
+        child: Container(),
       ),
-      floatingActionButton: Consumer(
-        builder: (context, ref, child) => FloatingActionButton(onPressed: () {
-          ref.watch(nameProvider.notifier).state++;
-        }),
-      ),
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => SecondScreen()));
+      }),
     );
   }
 }
