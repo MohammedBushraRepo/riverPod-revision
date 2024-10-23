@@ -23,15 +23,17 @@ class MyApp extends StatelessWidget {
 
 final nameProvider = Provider<String>((ref) => 'Mohamed');
 
-class HomeView extends ConsumerWidget {
+class HomeView extends StatelessWidget {
   @override
-  Widget build(BuildContext context, WidgetRef watch) {
-    final name = watch.watch(nameProvider);
+  Widget build(BuildContext context) {
+    // final name = watch.watch(nameProvider);
 
     return Scaffold(
       body: Center(
-        child: Container(
-          child: Text(name),
+        child: Consumer(
+          builder: (context, ref, child) => Container(
+            child: Text(ref.watch(nameProvider)),
+          ),
         ),
       ),
     );
