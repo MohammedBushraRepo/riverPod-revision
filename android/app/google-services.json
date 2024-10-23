@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "327935159433",
+    "project_id": "riverpod-c2903",
+    "storage_bucket": "riverpod-c2903.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327935159433:android:f9fb6b52f526bfdc0f2a58",
+        "android_client_info": {
+          "package_name": "com.example.riverpod_revision"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByUBhrFrX7KeK0gJXWM1P5OaCFlgkyh_A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
