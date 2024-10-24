@@ -1,20 +1,15 @@
-import 'dart:convert';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
-import 'package:riverpod_revision/user_model.dart';
 
-final cityProvider = StateProvider<String?>((ref) => 'Canada');
+final cityProvider = StateProvider<String>((ref) => 'Canada');
 
 final weatherProvider = StateProvider<String>((ref) {
-  final city = ref.watch(cityProvider.notifier);
-  return city.state == 'Canada'
+  final city = ref.watch(cityProvider); // Correctly get the city
+  return city == 'Canada'
       ? '24'
-      : city.state == 'Sudan'
+      : city == 'Sudan'
           ? '50'
-          : city.state == 'Qatar'
+          : city == 'Qatar'
               ? '30'
               : 'null';
 });
@@ -23,15 +18,15 @@ class SecondScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final city = ref.watch(cityProvider.notifier);
-    final weather = ref.watch(weatherProvider.notifier);
+    final weather = ref.watch(weatherProvider);
 
     return Scaffold(
       body: Container(
         child: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            DropdownButton(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              DropdownButton<String>(
                 value: city.state,
                 items: [
                   DropdownMenuItem(
@@ -49,18 +44,22 @@ class SecondScreen extends ConsumerWidget {
                 ],
                 onChanged: (value) {
                   if (value != null) {
-                    ref.read(cityProvider.notifier).state = value;
+                    city.state = value;
+                    // Since weatherProvider depends on cityProvider, it will automatically update
                   }
-                }),
-            Text(
-              weather.state,
-              style: TextStyle(fontSize: 40, color: Colors.amber),
-            ),
-          ],
-        )),
+                },
+              ),
+              Text(
+                weather,
+                style: TextStyle(fontSize: 40, color: Colors.amber),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
+}
 
   // //this function willl return widget of data column
   // Widget _getUserDataStream(WidgetRef ref) {
@@ -106,4 +105,4 @@ class SecondScreen extends ConsumerWidget {
 //           return CircularProgressIndicator();
 //         });
 //   }
-}
+
