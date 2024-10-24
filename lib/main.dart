@@ -1,11 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_revision/first_view.dart';
 import 'package:riverpod_revision/second_screen.dart';
 
-void main() {
-   WidgetsFlutterBinding.ensureInitialized();
-     Firebase.initializeApp();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(ProviderScope(child: MyApp()));
 }
 
@@ -20,26 +21,26 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomeView(),
+      home: FirstView(),
     );
   }
 }
 
-final nameProvider = StateProvider<int>((ref) => 0);
+// final nameProvider = StateProvider<int>((ref) => 0);
 
-class HomeView extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // final name = watch.watch(nameProvider);
+// class HomeView extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     // final name = watch.watch(nameProvider);
 
-    return Scaffold(
-      body: Center(
-        child: Container(),
-      ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SecondScreen()));
-      }),
-    );
-  }
-}
+//     return Scaffold(
+//       body: Center(
+//         child: Container(),
+//       ),
+//       floatingActionButton: FloatingActionButton(onPressed: () {
+//         Navigator.push(
+//             context, MaterialPageRoute(builder: (context) => SecondScreen()));
+//       }),
+//     );
+//   }
+// }
