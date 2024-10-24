@@ -9,8 +9,17 @@ import 'package:riverpod_revision/user_model.dart';
 CollectionReference userData = FirebaseFirestore.instance
     .collection('userData'); //from your firstore data base collection name
 
-final getUserData = FutureProvider<QuerySnapshot>((ref) => userData
-    .get()); //use FutureProvide.autoDisopse if you dont need to save the data in the Mobile cash
+// final getUserData = FutureProvider<QuerySnapshot>((ref) => userData
+//     .get()); //use FutureProvide.autoDisopse if you dont need to save the data in the Mobile cash
+
+//creating StreamProvider
+// final getUserDataStram = StreamProvider<String>((ref) => Stream.periodic(
+//       Duration(milliseconds: 100),
+//       (value) => '$value',
+//     ));
+// to get Stram from firsbase
+final getUserDataStram =
+    StreamProvider<QuerySnapshot>((ref) => userData.snapshots());
 
 class SecondScreen extends ConsumerWidget {
   @override
@@ -18,37 +27,37 @@ class SecondScreen extends ConsumerWidget {
     return Scaffold(
       body: Container(
         child: Center(
-          child: _buildUserData(ref),
+          child: _getUserDataStream(ref),
         ),
       ),
     );
   }
 
   //this function willl return widget of data column
-  Widget _buildUserData(WidgetRef ref) {
-    final future = ref.watch(getUserData);
-    return future.when(
+  Widget _getUserDataStream(WidgetRef ref) {
+    final stream = ref.watch(getUserDataStram);
+    return stream.when(
       data: (QuerySnapshot value) {
         // Check if the document list is not empty
         if (value.docs.isNotEmpty) {
-          // Safely cast the data to a Map<String, dynamic> and check for null
-          final userData = value.docs[0].data() as Map<String, dynamic>?;
+          // Ensure the data is correctly accessed from the first document
+          Map<String, dynamic>? data =
+              value.docs[0].data() as Map<String, dynamic>?;
 
-          if (userData != null) {
-            // Create the UserModel from the map
-            UserModel userModel = UserModel.fromMap(userData);
-            // Do something with the userModel, such as returning a widget
+          if (data != null) {
+            UserModel userData = UserModel.fromMap(data);
+            // Continue with your logic
+            print(userData.toMap());
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('User: ${userModel.name}'),
-                Text('Email: ${userModel.email}'),
+                Text(userData.name.toString()),
+                Text(userData.email.toString())
               ],
             );
           }
         }
-        // Fallback if no documents are found or data is null
-        return Text('No user data found');
+        return Text('No Data Found');
       },
       error: (value, stack) => Text('Error'),
       loading: () {
